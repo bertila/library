@@ -54,12 +54,10 @@ public class LoanRepository {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Loan> criteria = cb.createQuery(Loan.class);
         Root<Loan> loan = criteria.from(Loan.class);
-        // Swap criteria statements if you would like to try out type-safe criteria queries, a new
-        // feature in JPA 2.0
-        // criteria.select(member).orderBy(cb.asc(member.get(Member_.name)));
         criteria.select(loan).orderBy(cb.asc(loan.get("id")));
         return em.createQuery(criteria).getResultList();
     }
+   
     // TODO Find by Apache public Member findByTitle(String title) {
     // Class Metaphone
     // https://commons.apache.org/proper/commons-codec/apidocs/org/apache/commons/codec/language/Metaphone.html
