@@ -27,6 +27,13 @@ public class BookRepository {
 		return em.find(Book.class, id);
 	}
 	
+	public Book findAndDeleteBook(Long id) {
+		Book rBook = findById(id);
+		rBook.setStatus("Deleted");
+		em.merge(rBook);
+		return rBook;
+	}
+	
 	public Book findLendableBookById(String id) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
@@ -89,8 +96,17 @@ public class BookRepository {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
 		Root<Book> book = criteria.from(Book.class);
-		criteria.select(book).where(cb.equal(book.get("isbn"), isbn));
-		return em.createQuery(criteria).getSingleResult();
+		criteria.select(book).where(cb.equal(book.get("isbn"),isbn));
+		
+		Book returnBook =null;
+		try {
+			returnBook= em.createQuery(criteria).getSingleResult();
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
+		return returnBook; 
 	}
 
 	public Book borrowBook(Member member, Book book) {
@@ -122,8 +138,6 @@ public class BookRepository {
 	public Book returnBook(Book book) {
 		System.out.println(book.getStatus());
 		if (book.getStatus().equals("OnLoan")) {
-			
-			//System.out.println(loan);
 			Loan loan = book.getLoan();
 			loan.setReturndate(LocalDateTime.now());
 			loan.setStatus("Returned");

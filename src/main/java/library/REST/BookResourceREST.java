@@ -64,10 +64,16 @@ public class BookResourceREST {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Book lookupBookById(@PathParam("id") long id) {
 		Book book = bookRepository.findById(id);
-		if (book == null) {
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		
+		Response.ResponseBuilder builder = null;
+		if (book != null) {
+			builder = Response.ok();
+			return book;
 		}
-		return book;
+		else
+		{
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
 	}
 	
 	@GET
@@ -75,10 +81,13 @@ public class BookResourceREST {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Book> lookupBookByTitleSpellsLike(@PathParam("title") String title) {
 		List<Book> books = bookRepository.findByBookTitleByThatSpellsSimilarTo(title);
-		if (books == null) {
+		if (books != null) {
+			return books;
+		}
+		else 
+		{
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
-		return books;
 	}
 	
 	@GET
@@ -86,10 +95,14 @@ public class BookResourceREST {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Book lookupBookByIsbn(@PathParam("isbn") String isbn) {
 		Book book = bookRepository.findBookbyIsbn(isbn);
-		if (book== null) {
+		System.out.println(book);
+		if (book!= null) {
+			return book;
+		}
+		else
+		{
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
-		return book;
 	}
 	
 	
@@ -101,8 +114,8 @@ public class BookResourceREST {
 		Book book = bookRepository.findById(id);
 		
 		Response.ResponseBuilder builder = null;
-
 		Book bookLoan = bookRepository.returnBook(book);
+		
 		if (bookLoan != null) {
 			builder = Response.ok();
 		}
@@ -158,13 +171,10 @@ public class BookResourceREST {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Book updateStatusOnId(@PathParam("id") Long id) {
-		System.out.println(id);
-		
-		Book book = bookRepository.findById(id);
-		System.out.println(book);
-		
-		book.setStatus("DELETED");
-		System.out.println(book.getStatus());
+		// System.out.println(id);
+		Book book = bookRepository.findAndDeleteBook(id);
+		// System.out.println(book);
+		// System.out.println(book.getStatus());
 		
 		if (book== null) {
 			throw new WebApplicationException(Response.Status.NOT_FOUND);

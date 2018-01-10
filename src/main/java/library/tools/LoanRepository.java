@@ -80,6 +80,7 @@ public class LoanRepository {
 		return null;
 	}
 
+	@SuppressWarnings("unused")
 	public Loan returnLoan(Loan loan) {
 		
 		System.out.println(loan.getStatus());
@@ -97,14 +98,10 @@ public class LoanRepository {
 			em.merge(book);
 			em.merge(loan);
 			
-//			loan.setReturndate(LocalDateTime.now());
-//			loan.setStatus("Returned");
-
-			// loan.getBook().setStatus("Available");
-						
-			// book.setStatus("Available");
-			// em.merge(book);
-			// em.merge(loan);
+			if (book == null)
+			{
+				return null;
+			}
 			
 			return loan;
 		}

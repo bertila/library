@@ -109,8 +109,8 @@ public class LoanResourceREST {
 	public Response returnLoanPOST(@PathParam("loanid") Long id) {
 		
 		Loan loan = loanRepository.findById(id);
-		System.out.println(loan);
-		loan = loanRepository.returnLoan(loan);
+		if (loan !=null)
+			loan = loanRepository.returnLoan(loan);
 		
 		Response.ResponseBuilder builder = null;
 		

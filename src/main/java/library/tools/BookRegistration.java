@@ -21,6 +21,7 @@ public class BookRegistration {
 
 	    public void register(Book book) throws Exception {
 	        log.info("Registering " + book.getTitle());
+	        book.setStatus("Available");
 	        em.persist(book);
 	        bookEventSrc.fire(book);
 	    }
