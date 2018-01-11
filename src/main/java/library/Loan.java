@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
 
 import org.hibernate.jpamodelgen.xml.jaxb.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Loan {
@@ -35,7 +36,7 @@ public class Loan {
 	@OneToOne
 	private Member member;
 	
-	
+	@JsonIgnore
 	public Book getBook() {
 		return book;
 	}
