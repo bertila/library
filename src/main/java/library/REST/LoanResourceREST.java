@@ -80,23 +80,41 @@ public class LoanResourceREST {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createLoanPOST(@Context UriInfo info) {
+		String msg ="";
+		boolean error = false;
 
 		Long memberid = Long.parseLong(info.getQueryParameters().getFirst("memberid"));
 		Long bookid = Long.parseLong(info.getQueryParameters().getFirst("bookid"));
 
-		Book book = bookRepository.findById(bookid);
-		Member member=memberRepository.findById(memberid);
-		
 		Response.ResponseBuilder builder = null;
-
-		Book bookLoan = bookRepository.borrowBook(member,book );
+		Map<String, String> responseObj = new HashMap<>();
+		
+		Book book = bookRepository.findById(bookid);
+		if (book == null) {
+			msg = "Book could not be found!";
+			error =true;
+		}
+		
+		Member member=memberRepository.findById(memberid);
+		if (member == null) {
+			if (msg !="")
+				msg =msg +", ";
+			
+			msg = msg + "Member could not be found!";
+			error =true;
+		}
+		
+		Book bookLoan = null;
+		
+		if (error ==false)
+			bookLoan = bookRepository.borrowBook(member,book );
+		
 		if (bookLoan != null) {
 			builder = Response.ok();
 		}
 		else
 		{
-			Map<String, String> responseObj = new HashMap<>();
-            responseObj.put("book", "Book on loan");
+            responseObj.put("Loan", msg);
             builder = Response.status(Response.Status.CONFLICT).entity(responseObj);
 		}
 		return builder.build();
