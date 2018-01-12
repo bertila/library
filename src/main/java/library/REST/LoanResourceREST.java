@@ -3,13 +3,9 @@ package library.REST;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -39,12 +35,6 @@ import library.tools.LoanRepository;
 @Path("/loan")
 @RequestScoped
 public class LoanResourceREST {
-
-	@Inject
-	private Logger log;
-
-	@Inject
-	private Validator validator;
 
 	@Inject
 	private LoanRepository loanRepository;
@@ -144,22 +134,4 @@ public class LoanResourceREST {
 		return builder.build();
 	}
 	
-	/**
-	 * Creates a JAX-RS "Bad Request" response including a map of all violation fields, and their message. This can then be used
-	 * by clients to show violations.
-	 * 
-	 * @param violations A set of violations that needs to be reported
-	 * @return JAX-RS response containing all violations
-	 */
-	private Response.ResponseBuilder createViolationResponse(Set<ConstraintViolation<?>> violations) {
-		log.fine("Validation completed. violations found: " + violations.size());
-
-		Map<String, String> responseObj = new HashMap<>();
-
-		for (ConstraintViolation<?> violation : violations) {
-			responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
-		}
-
-		return Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
-	}
 }

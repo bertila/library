@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
-import javax.validation.Validator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -41,9 +40,6 @@ public class BookResourceREST {
 	private Logger log;
 
 	@Inject
-	private Validator validator;
-
-	@Inject
 	private BookRepository bookRepository;
 
 	@Inject
@@ -63,6 +59,7 @@ public class BookResourceREST {
 	public Book lookupBookById(@PathParam("id") long id) {
 		Book book = bookRepository.findById(id);
 		
+		@SuppressWarnings("unused")
 		Response.ResponseBuilder builder = null;
 		if (book != null) {
 			builder = Response.ok();
