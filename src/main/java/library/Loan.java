@@ -7,8 +7,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
-
-import org.hibernate.jpamodelgen.xml.jaxb.CascadeType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
