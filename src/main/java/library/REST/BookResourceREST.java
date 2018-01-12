@@ -12,9 +12,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -162,12 +162,12 @@ public class BookResourceREST {
 		return builder.build();
 	}
 	
-	@DELETE
-	@Path("/{id}")
+	@PUT
+	@Path("/status/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Book updateStatusOnId(@PathParam("id") Long id) {
 		// System.out.println(id);
-		Book book = bookRepository.findAndDeleteBook(id);
+		Book book = bookRepository.findAndUpdateStatus(id);
 		// System.out.println(book);
 		// System.out.println(book.getStatus());
 		

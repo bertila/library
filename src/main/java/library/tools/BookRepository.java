@@ -27,7 +27,7 @@ public class BookRepository {
 		return em.find(Book.class, id);
 	}
 	
-	public Book findAndDeleteBook(Long id) {
+	public Book findAndUpdateStatus(Long id) {
 		Book rBook = findById(id);
 		rBook.setStatus("Deleted");
 		em.merge(rBook);
